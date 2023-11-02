@@ -310,12 +310,15 @@
           .openPopup();
 
         // Initialize and autoupdate Ambulance cab marker
-        cabMarker = L.marker([carlat, carlong], {
-          icon: ambIcon,
-        })
-          .addTo(map)
-          .bindPopup("Ambulance Location")
-          .openPopup();
+        if (carlat != null && carlong != null) {
+          console.log(carlat, carlong, "inside 1st True");
+          cabMarker = L.marker([carlat, carlong], {
+            icon: ambIcon,
+          })
+            .addTo(map)
+            .bindPopup("Ambulance Location")
+            .openPopup();
+        } else showPopup("Please wait,\nfetching Ambulance location", 5000);
       }
 
       function updateCabLocation(tripid) {
@@ -340,7 +343,14 @@
             // Update the cab marker's position on the map
             console.log(newLocation.carlat, newLocation.carlong, Date.now());
             //console.log(Date.now());
-            cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
+            if (newLocation.carlat != null && newLocation.carlong != null) {
+              console.log(
+                newLocation.carlat,
+                newLocation.carlong,
+                "inside 2nd True"
+              );
+              cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
+            } else showPopup("Please wait,\nfetching Ambulance location", 5000);
           })
           .catch((error) => {
             //showPopup("Error fetching cab location: " + error, 6500);
@@ -348,15 +358,8 @@
           });
       }
 
-      function initializeCabLocationUpdate(tripid) {
-        // updateCabLocation(tripid); // Initial update
-        // Set up a periodic update every 50 seconds
-        //setInterval(updateCabLocation(tripid), 50); // 50 seconds
-      }
-
       window.onload = function () {
         getBookingData();
-        //initializeCabLocationUpdate();
       };
     </script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>

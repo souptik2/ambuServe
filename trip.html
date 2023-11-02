@@ -447,13 +447,13 @@
                 if (result.state == "success" && type == "checkin") {
                   // Handle the response if needed
 
-                  showPopup(result.status, 6500);
+                  showPopup(result.status, 5000);
                   bookingForm.reset();
                   closeBookingModal();
-                  location.reload();
+                  setTimeout(function () {
+                    location.reload();
+                  }, 2000);
                 } else if (result.state == "success" && type == "checkout") {
-                  // location.reload();
-
                   showPopup(result.status, 6500);
 
                   showPopup("Ending The Trip", 4000);
