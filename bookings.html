@@ -310,7 +310,7 @@
           .openPopup();
 
         // Initialize and autoupdate Ambulance cab marker
-        if (carlat != null && carlong != null) {
+        if (carlat != booklat && carlong != booklong) {
           console.log(carlat, carlong, "inside 1st True");
           cabMarker = L.marker([carlat, carlong], {
             icon: ambIcon,
