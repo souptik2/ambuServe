@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      #popup {
+        border-radius: 6px;
+        width: 250px;
+        height: 130px;
+        z-index: 1000;
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f3f3f3;
+        padding: 15px;
+        border: 2px solid #000;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      #popupMessage {
+        color: rgb(0, 0, 0);
+        font-size: 15px;
+      }
+      #popupclosebutton {
+        font-size: 15px;
+        background-color: #000;
+        color: #f3f3f3;
+        width: 52px;
+        height: 30px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #popupclosebutton:hover {
+        background-color: #303030;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Location Tracking</title>
+  </head>
+  <body>
+    <h1>Live Location Tracking</h1>
+    <p>Latitude: <span id="latitude">Fetching...</span></p>
+    <p>Longitude: <span id="longitude">Fetching...</span></p>
+    <div id="popup">
+      <p id="popupMessage"></p>
+      <button id="popupclosebutton" onclick="hidePopup()">Close</button>
+    </div>
+
+    <script>
+      function showPopup(message, duration) {
+        var popup = document.getElementById("popup");
+        var popupMessage = document.getElementById("popupMessage");
+        popupMessage.innerText = message;
+        popup.style.display = "block";
+
+        setTimeout(function () {
+          hidePopup();
+        }, duration);
+      }
+
+      function hidePopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
+      }
+      function callPopupFromFunction() {
+        showPopup(
+          "This is a programmatic popup asdddddddddddddddddddhg  kkhkjhkjh  jhkjhkjh  asddasd  hgghghgh sda !",
+          5000
+        );
+      }
+
+      function sendLocation(latitude, longitude) {
+        // You can send the latitude and longitude to your application using a fetch request.
+        // Replace the URL and method with your actual API endpoint and method.
+        fetch("http://localhost:8083/book", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ latitude, longitude }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log("Location data sent successfully.");
+            } else {
+              console.error("Failed to send location data.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error: " + error);
+            callPopupFromFunction();
+          });
+      }
+
+      function getLocation() {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.watchPosition(
+            function (position) {
+              const latitude = position.coords.latitude;
+              const longitude = position.coords.longitude;
+
+              // Display the live location on the webpage
+              document.getElementById("latitude").textContent = latitude;
+              document.getElementById("longitude").textContent = longitude;
+
+              // Send the location to your application every 5 minutes (300,000 milliseconds)
+              sendLocation(latitude, longitude);
+            },
+            function (error) {
+              console.error("Error getting location: " + error.message);
+            }
+          );
+        } else {
+          console.error("Geolocation is not supported in your browser.");
+        }
+      }
+
+      // Get the initial location
+      getLocation();
+
+      // Update the location every 5 minutes (300,000 milliseconds)
+      setInterval(getLocation, 300000);
+    </script>
+  </body>
+</html>
