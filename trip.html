@@ -323,9 +323,13 @@
                 tripDetails.chkouttm;
 
               // Get the initial location
-              getLocation();
+              getLocation(tripDetails.tripid);
               // Update the location every 40 seconds
-              setInterval(getLocation, 40000);
+              //setInterval(getLocation(tripDetails.tripid), 40000);
+              setInterval(function () {
+                const tid = tripDetails.tripid; // Replace with the actual tid
+                getLocation(tid);
+              }, 20000);
             } else if (tripDetails.state == "error") {
               showPopup(tripDetails.status, 5500);
               setTimeout(callURL, 6000);
@@ -505,13 +509,13 @@
 
       //SENDING LOCATIONNNN!!!!!!!!!
 
-      function sendLocation(latitude, longitude) {
-        const id = urlParams.get("id");
-        const decodedId = decodeBase64Param(id);
+      function sendLocation(tripid, latitude, longitude) {
+        var tid = tripid; //urlParams.get("id");
+        // const decodedId = decodeBase64Param(id);
         var lat = latitude;
         var long = longitude;
-        var data = {
-          id: decodedId,
+        const data = {
+          id: tid,
           lat: lat,
           long: long,
         };
@@ -538,10 +542,11 @@
             console.error("Error: " + error);
           });
       }
-      function getLocation() {
+      function getLocation(tripid) {
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             function (position) {
+              const tid = tripid;
               const lvlatitude = position.coords.latitude;
               const lvlongitude = position.coords.longitude;
 
@@ -550,8 +555,10 @@
               // document.getElementById("longitude").textContent = longitude;
 
               // Send the location to your application every 5 minutes (300,000 milliseconds)
-              console.log(lvlatitude);
-              sendLocation(lvlatitude, lvlongitude);
+              console.log(
+                "tid:" + tid + "lat:" + lvlatitude + "long:" + lvlongitude
+              );
+              sendLocation(tid, lvlatitude, lvlongitude);
             },
             function (error) {
               console.error("Error getting location: " + error.message);

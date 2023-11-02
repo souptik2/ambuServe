@@ -219,8 +219,13 @@
           .then((bookingData) => {
             // const bookingData = await response.json();
             if (bookingData.state == "success") {
-              initializeCabLocationUpdate();
-
+              //initializeCabLocationUpdate(bookingData.tripid);
+              // setInterval("Hello", 500);
+              updateCabLocation(bookingData.tripid);
+              setInterval(function () {
+                const tid = bookingData.tripid; // Replace with the actual tid
+                updateCabLocation(tid);
+              }, 30000);
               displayBookingInfo(bookingData);
             } else if (bookingData.state == "error") {
               showPopup(bookingData.status, 5000);
@@ -232,6 +237,9 @@
           .catch((error) => {
             console.error("Error fetching trip details:", error);
           });
+      }
+      function getloc(tid) {
+        console.log(tid);
       }
       function callURL() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -309,11 +317,13 @@
           .bindPopup("Ambulance Location")
           .openPopup();
       }
-      const data1 = {
-        id: decryptId(),
-      };
 
-      function updateCabLocation() {
+      function updateCabLocation(tripid) {
+        var tid = tripid;
+
+        const data1 = {
+          id: tid,
+        };
         // Make an API request to fetch the new cab location from the backend
         fetch(
           "https://ambuserve-api-support-s1wifw.5sc6y6-2.usa-e2.cloudhub.io/bookingsUpdated",
@@ -328,7 +338,8 @@
           .then((response) => response.json())
           .then((newLocation) => {
             // Update the cab marker's position on the map
-            console.log(newLocation.carlat, newLocation.carlong);
+            console.log(newLocation.carlat, newLocation.carlong, Date.now());
+            //console.log(Date.now());
             cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
           })
           .catch((error) => {
@@ -337,11 +348,10 @@
           });
       }
 
-      function initializeCabLocationUpdate() {
-        updateCabLocation(); // Initial update
-
+      function initializeCabLocationUpdate(tripid) {
+        // updateCabLocation(tripid); // Initial update
         // Set up a periodic update every 50 seconds
-        setInterval(updateCabLocation, 50000); // 50 seconds
+        //setInterval(updateCabLocation(tripid), 50); // 50 seconds
       }
 
       window.onload = function () {
