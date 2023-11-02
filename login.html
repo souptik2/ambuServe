@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      /* Reset some default styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .container {
+        height: 100vh;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .content {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .content h1 {
+        font-size: 2rem;
+      }
+
+      form {
+        justify-content: center;
+        margin: 0;
+        width: 100%;
+      }
+
+      form label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+      }
+
+      form input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .buttons {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .buttons input[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 15px 30px;
+        margin: 10px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .buttons input[type="submit"]:hover {
+        background-color: #555;
+      }
+      .button1 {
+        width: 30%;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 15px;
+        margin: 15px;
+        font-size: 1.5vw;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 3px 5px 5px rgb(161, 157, 157);
+      }
+
+      .button1:hover {
+        background-color: #555;
+      }
+
+      footer {
+        width: 100%;
+        bottom: 0;
+        height: 60px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+      }
+      #popup {
+        border-radius: 6px;
+        width: 250px;
+        height: 100px;
+        z-index: 1000;
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f3f3f3;
+        padding: 12px;
+        border: 2px solid #000000ad;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      #popupMessage {
+        color: rgb(0, 0, 0);
+        font-size: 15px;
+      }
+      #popupclosebutton {
+        padding: 0%;
+        text-align: center;
+        font-size: 14px;
+        background-color: #000;
+        color: #f3f3f3;
+        width: 60px;
+        height: 30px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #popupclosebutton:hover {
+        background-color: #303030;
+      }
+
+      @media screen and (max-width: 1085px) {
+        .button1 {
+          transition: 0.5s;
+          width: 35%;
+          background-color: #333;
+          color: #fff;
+          border: none;
+          padding: 16px;
+          margin: 15px;
+          font-size: 2.5vw;
+          cursor: pointer;
+        }
+      }
+      @media screen and (max-width: 330px) {
+        .button1 {
+          transition: 0.5s;
+          width: 35%;
+          background-color: #333;
+          color: #fff;
+          border: none;
+          padding: 12px;
+          margin: 10px;
+          font-size: 3.5vw;
+          cursor: pointer;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Login</h1>
+    </header>
+
+    <div class="container">
+      <div class="content">
+        <h1>Enter Your Credentials</h1>
+        <form onsubmit="return login()">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required /><br />
+
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required /><br />
+
+          <input type="submit" value="Login" class="button1" />
+        </form>
+        <div id="popup">
+          <p id="popupMessage"></p>
+          <button id="popupclosebutton" onclick="hidePopup()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>&copy; 2023 Your Company. All rights reserved.</footer>
+
+    <script>
+      // POPUP SCRIPT
+      function showPopup(message, duration) {
+        var popup = document.getElementById("popup");
+        var popupMessage = document.getElementById("popupMessage");
+        popupMessage.innerText = message;
+        popup.style.display = "block";
+
+        setTimeout(function () {
+          hidePopup();
+        }, duration);
+      }
+
+      function hidePopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
+      }
+
+      // POPUP SCRIPT END
+
+      function login() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const formData = {
+          email: email,
+          password: password,
+        };
+
+        fetch("https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            const status = data.status;
+            const state = data.state;
+            // alert(status);
+            // You can redirect the user to the dashboard or another page here
+            if (state == "success") {
+              if (data && data.id) {
+                // Encrypt the id using btoa
+                const encryptedId = btoa(data.id);
+                const encryptedsessionId = btoa(data.sessionid);
+
+                // Redirect to user.html with the encrypted id as a query parameter
+                //window.location.href = "user.html?id=" + encryptedId;
+                window.location.href = `user.html?id=${encryptedId}&sessionid=${encryptedsessionId}`;
+              }
+            } else if (state == "error") {
+              showPopup(status, 6500);
+              //alert(status);
+            }
+          })
+          .catch((error) => {
+            // Handle errors, e.g., show an error message
+            //alert("Login failed. Please check your credentials.");
+            showPopup("Login failed. Please check your credentials.", 6500);
+          });
+
+        return false;
+      }
+    </script>
+  </body>
+</html>

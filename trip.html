@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Active Trip</title>
+    <!-- Meta tags, CSS, and other head content as needed -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* Add your CSS styles for the trip page here */
+      /* Example styles, customize as needed */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-top: 20px;
+      }
+      .container {
+        height: 100vh;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      /* Profile Card */
+      .profile-card {
+        height: 50%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        max-width: 400px;
+        margin: 0 auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .profile-card p {
+        font-size: 18px;
+        margin: 20px;
+      }
+
+      .profile-card strong {
+        font-weight: bold;
+      }
+
+      .button1 {
+        width: 36%;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 15px 20px;
+        margin: 15px;
+        font-size: 1vw;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 3px 5px 5px rgb(161, 157, 157);
+      }
+
+      .button1:hover {
+        background-color: #555;
+      }
+      span {
+        margin: 1%;
+        color: rgba(253, 78, 66, 0.933);
+      }
+      /* .pin-button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+
+      .pin-button {
+        background-color: #ffc107; /* Change color for pin buttons 
+      } 
+      */
+
+      /* Error Message */
+      .error-message {
+        color: red;
+      }
+      footer {
+        width: 100%;
+        bottom: 0;
+        height: 60px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999; /* Set a high z-index value to ensure it's on top */
+      }
+
+      .modal-content {
+        margin: 6px;
+        background-color: #fff;
+        width: 300px;
+        padding: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 5px;
+      }
+
+      .modal-content label {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .modal-content input {
+        padding: 10px;
+        margin: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .modal-content select,
+      .modal-content button {
+        background-color: #333;
+
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .modal-content select {
+        background-color: #f9f9f9;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 8px;
+        width: 100%;
+      }
+      button {
+        background-color: #0074d9;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 3px 5px 5px rgb(161, 157, 157);
+      }
+      #popup {
+        border-radius: 6px;
+        width: 260px;
+        height: 160px;
+        z-index: 1000;
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f3f3f3;
+        padding: 12px;
+        border: 2px solid #000000ad;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      #popupMessage {
+        color: rgb(0, 0, 0);
+        font-size: 15px;
+      }
+      #popupclosebutton {
+        padding: 0%;
+        text-align: center;
+        font-size: 14px;
+        background-color: #000;
+        color: #f3f3f3;
+        width: 60px;
+        height: 30px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #popupclosebutton:hover {
+        background-color: #303030;
+      }
+      @media screen and (max-width: 1085px) {
+        .profile-card {
+          height: 50%;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 20px;
+          max-width: 400px;
+          margin: 0 auto;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card p {
+          font-size: 18px;
+          margin: 20px;
+          font-size: 2vw;
+        }
+
+        .profile-card strong {
+          font-weight: bold;
+        }
+
+        .button1 {
+          width: 36%;
+          background-color: #333;
+          color: #fff;
+          border: none;
+          padding: 15px 10px;
+          margin: 15px;
+          font-size: 1.5vw;
+          cursor: pointer;
+        }
+      }
+      @media screen and (max-width: 500px) {
+        .profile-card {
+          height: 40%;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 10px;
+          max-width: 300px;
+          margin: 0 auto;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card p {
+          margin: 25px;
+          font-size: 2.6vw;
+        }
+
+        .profile-card strong {
+          font-weight: bold;
+        }
+
+        .button1 {
+          height: 28px;
+          width: 30%;
+          background-color: #333;
+          color: #fff;
+          border: none;
+          padding: 5px 10px;
+          margin: 12px;
+          font-size: 2vw;
+          cursor: pointer;
+        }
+      }
+    </style>
+    <script>
+      // POPUP SCRIPT
+      function showPopup(message, duration) {
+        var popup = document.getElementById("popup");
+        var popupMessage = document.getElementById("popupMessage");
+        popupMessage.innerText = message;
+        popup.style.display = "block";
+
+        setTimeout(function () {
+          hidePopup();
+        }, duration);
+      }
+
+      function hidePopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
+      }
+      // POPUP SCRIPT END
+      // Your JavaScript code for the trip page
+
+      function decodeBase64Param(param) {
+        return atob(param);
+      }
+
+      function getTripDetails(id, sessionId) {
+        const encid = id;
+        const encsessionId = sessionId;
+        // Decode the ID from base64
+        const decodedId = decodeBase64Param(urlParams.get("id"));
+        const decodedSessionId = decodeBase64Param(urlParams.get("sessionid"));
+
+        // Create the data payload to send to the backend
+        const data = {
+          id: decodedId,
+          sessionid: decodedSessionId,
+        };
+
+        // Make an API request to fetch trip details
+        fetch("https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/trip", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((tripDetails) => {
+            if (tripDetails.state == "success") {
+              // Update the UI with trip details
+              document.getElementById("patient-name").textContent =
+                tripDetails.patientname;
+              document.getElementById("category").textContent =
+                tripDetails.category;
+              document.getElementById("phone").textContent = tripDetails.phone;
+              document.getElementById("checkin-time").textContent =
+                tripDetails.chkintm;
+              document.getElementById("checkout-time").textContent =
+                tripDetails.chkouttm;
+
+              // Get the initial location
+              getLocation();
+              // Update the location every 40 seconds
+              setInterval(getLocation, 40000);
+            } else if (tripDetails.state == "error") {
+              showPopup(tripDetails.status, 5500);
+              setTimeout(callURL, 6000);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching trip details:", error);
+          });
+      }
+      function callURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const encid = urlParams.get("id");
+        const encsessionid = urlParams.get("sessionid");
+        window.location.href = `driverprofile.html?id=${encid}&sessionid=${encsessionid}`;
+      }
+
+      function tohospital() {
+        const googleMapsUrl = `https://www.google.com/maps/search/hospital+and+nursing+home/`;
+
+        // Open the URL in a new tab
+
+        window.open(googleMapsUrl, "_blank");
+      }
+
+      function tomap() {
+        const decodedId = decodeBase64Param(urlParams.get("id"));
+        const decodedSessionId = decodeBase64Param(urlParams.get("sessionid"));
+
+        // Create the data payload to send to the backend
+        const data = {
+          id: decodedId,
+          sessionid: decodedSessionId,
+        };
+        fetch(
+          "https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/booklocation",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.state == "success") {
+              // Extract latitude and longitude from the data received
+              const latitude = data.lat;
+              const longitude = data.long;
+
+              // Construct the Google Maps URL
+              const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=driving&dir_action=navigate`;
+
+              // Open the URL in a new tab
+
+              window.open(googleMapsUrl, "_blank");
+            } else if (data.state == "error") {
+              showPopup(data.status, 6500);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching trip details:", error);
+          });
+      }
+
+      // Extract the driver ID and session ID from the query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+      const sessionId = urlParams.get("sessionid");
+
+      // Call the function to get and display trip details
+      getTripDetails(id, sessionId);
+
+      function openPinPopup(type) {
+        // Prompt the user to enter a pin value
+        //const pinValue = prompt(`Enter ${type} pin:`);
+        openBookingModal();
+        console.log(type);
+        const bookingForm = document.getElementById("booking-form");
+
+        bookingForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const pinValue = document.getElementById("userPIN").value;
+          const decodedId = decodeBase64Param(id);
+          const decodedSessionId = decodeBase64Param(sessionId);
+
+          if (pinValue !== null) {
+            // Submit the pin value to the corresponding endpoint
+            const id = decodedId; // Replace with the actual ID
+            const sessionId = decodedSessionId; // Replace with the actual session ID
+            if (type == "checkin") {
+              var endpoint =
+                "https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/checkin";
+            } else if (type == "checkout") {
+              var endpoint =
+                "https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/checkout";
+            }
+            console.log(endpoint);
+            const data = {
+              id: id,
+              sessionid: sessionId,
+              pin: pinValue,
+            };
+
+            // Make an API request to the endpoint
+            fetch(endpoint, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json())
+              .then((result) => {
+                if (result.state == "success" && type == "checkin") {
+                  // Handle the response if needed
+
+                  showPopup(result.status, 6500);
+                  bookingForm.reset();
+                  closeBookingModal();
+                  location.reload();
+                } else if (result.state == "success" && type == "checkout") {
+                  // location.reload();
+
+                  showPopup(result.status, 6500);
+                  showPopup("Ending The Trip", 6500);
+                  bookingForm.reset();
+                  closeBookingModal();
+                  endtrip();
+                } else {
+                  showPopup(result.status, 6500);
+                  bookingForm.reset();
+                  closeBookingModal();
+                }
+              })
+              .catch((error) => {
+                console.error(`Error ${type} pin:`, error);
+              });
+          }
+        });
+      }
+
+      function endtrip() {
+        const encid = urlParams.get("id");
+        const encsessionid = urlParams.get("sessionid");
+        const decodedId = decodeBase64Param(encid);
+        const decodedSessionId = decodeBase64Param(encsessionid);
+        const data = {
+          id: decodedId,
+          sessionid: decodedSessionId,
+        };
+        console.log("outgoing :" + data);
+        fetch(
+          "https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/endtrip",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            if (data.state == "success") {
+              showPopup(data.status, 5000);
+              window.location.href = `driverprofile.html?id=${encid}&sessionid=${encsessionid}`;
+            } else if (data.state == "error") {
+              showPopup(data.status, 6500);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching trip details:", error);
+          });
+      }
+
+      //SENDING LOCATIONNNN!!!!!!!!!
+
+      function sendLocation(latitude, longitude) {
+        const id = urlParams.get("id");
+        const decodedId = decodeBase64Param(id);
+        var lat = latitude;
+        var long = longitude;
+        var data = {
+          id: decodedId,
+          lat: lat,
+          long: long,
+        };
+        // You can send the latitude and longitude to your application using a fetch request.
+        // Replace the URL and method with your actual API endpoint and method.
+        fetch(
+          "https://ambuserve-api-support-s1wifw.5sc6y6-2.usa-e2.cloudhub.io/sendliveloc",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            if (response.ok) {
+              console.log("Location data sent successfully.");
+            } else {
+              console.error("Failed to send location data.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error: " + error);
+          });
+      }
+      function getLocation() {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              const lvlatitude = position.coords.latitude;
+              const lvlongitude = position.coords.longitude;
+
+              // Display the live location on the webpage
+              // document.getElementById("latitude").textContent = latitude;
+              // document.getElementById("longitude").textContent = longitude;
+
+              // Send the location to your application every 5 minutes (300,000 milliseconds)
+              console.log(lvlatitude);
+              sendLocation(lvlatitude, lvlongitude);
+            },
+            function (error) {
+              console.error("Error getting location: " + error.message);
+            }
+          );
+        } else {
+          console.error("Geolocation is not supported in your browser.");
+        }
+      }
+
+      // Get the initial location
+      //getLocation();
+
+      function openBookingModal() {
+        const modal = document.getElementById("booking-modal");
+        modal.style.display = "block";
+      }
+
+      function closeBookingModal() {
+        const modal = document.getElementById("booking-modal");
+        modal.style.display = "none";
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Trip Detail</h1>
+    </header>
+    <div class="container">
+      <div class="profile-card">
+        <p><strong>Patient Name:</strong> <span id="patient-name"></span></p>
+        <p><strong>Category:</strong> <span id="category"></span></p>
+        <p><strong>Phone:</strong> <span id="phone"></span></p>
+        <p><strong>Check-In Time:</strong> <span id="checkin-time"></span></p>
+        <p><strong>Check-Out Time:</strong> <span id="checkout-time"></span></p>
+        <button onclick="openPinPopup('checkin')" class="button1 pin-button">
+          Check In
+        </button>
+        <button onclick="openPinPopup('checkout')" class="button1 pin-button">
+          Check Out
+        </button>
+        <div id="popup">
+          <p id="popupMessage"></p>
+          <button id="popupclosebutton" onclick="hidePopup()">Close</button>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div>
+        <button onclick="tomap()" class="button1">Navigate</button>
+        <button onclick="tohospital()" class="button1">Show Hospitals</button>
+      </div>
+      <!-- Error Message -->
+      <div class="error-message"></div>
+    </div>
+    <div id="booking-modal" class="modal">
+      <div class="modal-content">
+        <span
+          onclick="closeBookingModal()"
+          style="
+            cursor: pointer;
+            color: red;
+            font-size: 20px;
+            text-shadow: 2px 4px 4px rgb(141, 105, 105);
+          "
+          >&times;</span
+        >
+        <h2>Enter PIN</h2>
+        <form id="booking-form">
+          <label for="userPIN">PIN:</label>
+          <input type="text" id="userPIN" required />
+
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+
+    <footer>&copy; 2023 Your Company. All rights reserved.</footer>
+  </body>
+</html>

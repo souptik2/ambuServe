@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>My Profile</title>
+  <head>
+    <!-- Meta tags, CSS, and other head content as needed -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* Add your CSS styles for the user profile here */
+      /* Example styles, customize as needed */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .content {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .content h1 {
+        font-size: 2rem;
+      }
+
+      .profile {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        text-align: center;
+      }
+
+      .profile h2 {
+        font-weight: 200;
+      }
+
+      .profile p {
+        font-size: 1.2rem;
+        font-weight: bold; /* Make text bold */
+      }
+
+      #user1 p {
+        font-size: 30px;
+        font-weight: 600;
+      }
+
+      /* Map container styles */
+      #map {
+        height: 300px;
+        width: 100%;
+        margin-top: 20px;
+        border: 4px solid black;
+        border-radius: 20px;
+        box-shadow: 3px 5px 5px rgb(161, 157, 157);
+      }
+
+      /* Button styles */
+      button {
+        background-color: #0074d9;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 3px 5px 5px rgb(161, 157, 157);
+      }
+      .button1 {
+        width: 30%;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 15px 30px;
+        margin: 15px;
+        font-size: 1vw;
+        cursor: pointer;
+      }
+
+      .button1:hover {
+        background-color: #555;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+      footer {
+        width: 100%;
+
+        bottom: 0;
+        height: 60px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+      }
+      #patient-name {
+        width: 50%;
+      }
+      #description {
+        width: 80%;
+        margin-bottom: 10px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999; /* Set a high z-index value to ensure it's on top */
+      }
+
+      .modal-content {
+        margin: 6px;
+        background-color: #fff;
+        width: 300px;
+        padding: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 5px;
+      }
+
+      .modal-content label {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .modal-content input {
+        padding: 10px;
+        margin: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .modal-content select,
+      .modal-content button {
+        background-color: #333;
+
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .modal-content select {
+        background-color: #f9f9f9;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 8px;
+        width: 100%;
+      }
+      #popup {
+        border-radius: 6px;
+        width: 250px;
+        height: 100px;
+        z-index: 1000;
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f3f3f3;
+        padding: 12px;
+        border: 2px solid #000000ad;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      #popupMessage {
+        color: rgb(0, 0, 0);
+        font-size: 15px;
+      }
+      #popupclosebutton {
+        padding: 0%;
+        text-align: center;
+        font-size: 14px;
+        background-color: #000;
+        color: #f3f3f3;
+        width: 60px;
+        height: 30px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #popupclosebutton:hover {
+        background-color: #303030;
+      }
+
+      @media screen and (max-width: 1085px) {
+        .button1 {
+          transition: 0.5s;
+          width: 30%;
+          background-color: #333;
+          color: #fff;
+          border: none;
+          padding: 16px;
+          margin: 15px;
+          font-size: 2vw;
+          cursor: pointer;
+        }
+      }
+      @media screen and (max-width: 330px) {
+        .button1 {
+          transition: 0.5s;
+          width: 40%;
+          background-color: #333;
+          color: #fff;
+          border: none;
+          padding: 12px;
+          margin: 10px;
+          font-size: 3vw;
+          cursor: pointer;
+        }
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <script>
+      let map;
+      let marker;
+      let currentLatitude;
+      let currentLongitude;
+
+      // POPUP SCRIPT
+      function showPopup(message, duration) {
+        var popup = document.getElementById("popup");
+        var popupMessage = document.getElementById("popupMessage");
+        popupMessage.innerText = message;
+        popup.style.display = "block";
+
+        setTimeout(function () {
+          hidePopup();
+        }, duration);
+      }
+
+      function hidePopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
+      }
+      // POPUP SCRIPT END
+
+      function decryptId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const encryptedId = urlParams.get("id");
+
+        if (encryptedId) {
+          return atob(encryptedId);
+        }
+        return null;
+      }
+      function decryptsessionId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get("sessionid");
+
+        if (sessionId) {
+          return atob(sessionId);
+        }
+        return null;
+      }
+
+      async function getUserData() {
+        const id = decryptId();
+        const sessionid = decryptsessionId();
+        if (!id) {
+          document.getElementById("profile").textContent = "Invalid ID";
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            "hhttps://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/user",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ id: id, sessionid: sessionid }),
+            }
+          );
+
+          if (response.ok) {
+            const userData = await response.json();
+
+            if (userData.state == "success") {
+              displayUserProfile1(userData);
+              displayUserProfile(userData);
+              initMap();
+            } else if (userData.state == "error") {
+              showPopup(userData.status + "\nPlease CLOSE the Window", 6500);
+
+              window.close();
+            }
+          } else {
+            document.getElementById("profile").textContent =
+              "Error fetching user data";
+          }
+        } catch (error) {
+          document.getElementById("profile").textContent = "Error: " + error;
+        }
+      }
+
+      function displayUserProfile1(userData) {
+        const profileElement = document.getElementById("user1");
+        profileElement.innerHTML = `
+        <p> Welcome, ${userData.name || "Loading..."}</p>
+
+            `;
+      }
+      function displayUserProfile(userData) {
+        const profileElement = document.getElementById("profile");
+        profileElement.innerHTML = `
+                <h2>My Profile</h2>
+                <p>Email: ${userData.email || "Loading..."}</p>
+                <p>Phone: ${userData.phone || "Loading..."}</p>
+                <p>Bookings: ${userData.bookings || "Loading..."}</p>
+            `;
+      }
+
+      function initMap() {
+        if ("geolocation" in navigator) {
+          // Get the user's current location
+          navigator.geolocation.getCurrentPosition(function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            currentLatitude = latitude;
+            currentLongitude = longitude;
+            displayMap(latitude, longitude);
+            displayLocation(latitude, longitude);
+          });
+        } else {
+          document.getElementById("location").textContent =
+            "Geolocation is not supported in your browser.";
+        }
+      }
+
+      function displayMap(latitude, longitude) {
+        map = L.map("map").setView([latitude, longitude], 15);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        marker = L.marker([latitude, longitude], { draggable: true })
+          .addTo(map)
+          .bindPopup("Your Location")
+          .openPopup();
+
+        marker.on("dragend", function (event) {
+          const markerLatLng = event.target.getLatLng();
+          currentLatitude = markerLatLng.lat;
+          currentLongitude = markerLatLng.lng;
+          displayLocation(currentLatitude, currentLongitude);
+        });
+      }
+
+      function displayLocation(latitude, longitude) {
+        document.getElementById(
+          "location"
+        ).textContent = `Location: Latitude ${latitude}, Longitude ${longitude}`;
+      }
+
+      function setLocation() {
+        if (marker && currentLatitude && currentLongitude) {
+          marker.setLatLng([currentLatitude, currentLongitude]).update();
+        }
+      }
+      function openBookingModal() {
+        const modal = document.getElementById("booking-modal");
+        modal.style.display = "block";
+      }
+
+      function closeBookingModal() {
+        const modal = document.getElementById("booking-modal");
+        modal.style.display = "none";
+      }
+
+      async function bookNow(id, sessionid) {
+        const confirmBooking = confirm(
+          `Are you sure you want to book at Latitude ${currentLatitude}, Longitude ${currentLongitude}?`
+        );
+
+        if (confirmBooking) {
+          openBookingModal();
+          const bookingForm = document.getElementById("booking-form");
+
+          bookingForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const patientName = document.getElementById("patient-name").value;
+            const category = document.getElementById("description").value;
+            const lat = currentLatitude;
+            const long = currentLongitude;
+
+            showPopup(
+              "Booking in Progress, Please Wait,\nDo not REFRESH",
+              7500
+            );
+            // Check if the user provided both values
+            if (patientName && category) {
+              // Data to send to the endpoint
+              const data = {
+                id: id,
+                sessionid: sessionid,
+                patientName: patientName,
+                category: category,
+                lat: lat,
+                long: long,
+              };
+
+              // Make an API request to the booking endpoint
+              fetch(
+                "https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/book",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+                }
+              )
+                .then((response) => response.json())
+                .then((result) => {
+                  const status = result.status;
+                  if (result.state == "success") {
+                    showPopup(status, 6500);
+                    bookingForm.reset();
+                    closeBookingModal();
+                  } else if (result.state == "error") {
+                    showPopup(status, 6500);
+                    bookingForm.reset();
+                    closeBookingModal();
+                  } else {
+                    showPopup("Unexpected Error has occured !!", 6500);
+                    bookingForm.reset();
+                    closeBookingModal();
+                  }
+                });
+            }
+          });
+        }
+      }
+      function viewBookings(id, sessionid) {
+        const encryptedId = btoa(id);
+        const encryptedsessionId = btoa(sessionid);
+
+        if (encryptedId && encryptedsessionId) {
+          window.location.href = `bookings.html?id=${encryptedId}&sessionid=${encryptedsessionId}`;
+        }
+      }
+
+      window.onload = function () {
+        getUserData();
+        //initMap();
+      };
+    </script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  </head>
+  <body>
+    <header><!-- Header content as needed -->My Profile</header>
+
+    <div class="container">
+      <div class="content">
+        <div id="user1"><!-- Welcome data will be displayed here --></div>
+
+        <div id="profile" class="profile">
+          <!-- User profile data will be displayed here -->
+        </div>
+        <!-- <button onclick="setLocation()">Set Marker Location</button> -->
+        <button
+          onclick="bookNow(decryptId(),decryptsessionId())"
+          class="button1"
+        >
+          Book Now
+        </button>
+        <div id="booking-modal" class="modal">
+          <div class="modal-content">
+            <span
+              onclick="closeBookingModal()"
+              style="
+                cursor: pointer;
+                color: red;
+                font-size: 20px;
+                text-shadow: 2px 4px 4px rgb(141, 105, 105);
+              "
+              >&times;</span
+            >
+            <h2>Booking Information</h2>
+            <form id="booking-form">
+              <label for="patient-name">Patient Name:</label>
+              <input type="text" id="patient-name" required />
+
+              <label for="description">Category:</label>
+              <select id="description" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="fracture">Fracture</option>
+                <option value="burns">Burns</option>
+                <option value="sickness">Sickness</option>
+                <option value="heart-attack">Heart Attack</option>
+              </select>
+
+              <button type="submit">Send</button>
+            </form>
+          </div>
+        </div>
+        <button
+          onclick="viewBookings( decryptId(),decryptsessionId())"
+          class="button1"
+        >
+          View Bookings
+        </button>
+        <p id="location"></p>
+        <div id="map"></div>
+        <h3 style="color: #555; font-weight: lighter; font-size: 16px">
+          use tracker on map to set the exact location
+        </h3>
+        <div id="popup">
+          <p id="popupMessage"></p>
+          <button id="popupclosebutton" onclick="hidePopup()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>&copy; 2023 Your Company. All rights reserved.</footer>
+  </body>
+</html>
