@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Driver Profile</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Meta tags, CSS, and other head content as needed -->
+
+    <style>
+      /* Add your CSS styles for the driver profile page here */
+      /* Example styles, customize as needed */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        height: 100vh;
+        justify-self: left;
+      }
+      .content1 {
+        margin: 15%;
+        height: 32%;
+        border-radius: 15px;
+        background-color: rgb(255, 255, 255);
+        padding: 5px;
+        text-align: center;
+        border: 1px solid rgba(138, 138, 138, 0.305);
+      }
+      .content {
+        text-align: center;
+        margin: 15%;
+        height: 34%;
+        border-radius: 15px;
+        background-color: rgb(255, 255, 255);
+        padding: 20px;
+        text-align: center;
+        border: 1px solid rgba(138, 138, 138, 0.305);
+      }
+      .blk {
+        margin: 2%;
+        width: 100%;
+        text-align: center;
+        font-size: 1.2vw;
+      }
+
+      span {
+        margin: 1%;
+        /* color: rgba(253, 78, 66, 0.933); */
+      }
+      .txtval {
+        color: #555;
+        font-weight: 500;
+      }
+
+      .content h1 {
+        font-size: 2vw;
+      }
+      .button1 {
+        width: 30%;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 15px 30px;
+        margin: 15px;
+        font-size: 1vw;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 3px 5px 5px rgb(161, 157, 157);
+      }
+
+      .button1:hover {
+        background-color: #555;
+      }
+      footer {
+        width: 100%;
+        margin-top: 15%;
+        bottom: 0;
+        height: 60px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+      }
+      #popup {
+        border-radius: 6px;
+        width: 250px;
+        height: 100px;
+        z-index: 1000;
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f3f3f3;
+        padding: 12px;
+        border: 2px solid #000000ad;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      #popupMessage {
+        color: rgb(0, 0, 0);
+        font-size: 15px;
+      }
+      #popupclosebutton {
+        padding: 0%;
+        text-align: center;
+        font-size: 14px;
+        background-color: #000;
+        color: #f3f3f3;
+        width: 60px;
+        height: 30px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #popupclosebutton:hover {
+        background-color: #303030;
+      }
+      @media screen and (max-width: 600px) {
+        .content {
+          margin: 15%;
+          height: 36%;
+          border-radius: 15px;
+          background-color: rgb(255, 255, 255);
+          padding: 15px;
+          text-align: center;
+          border: 1px solid rgba(138, 138, 138, 0.305);
+        }
+        .blk {
+          width: 90%;
+          font-size: 1.9vw;
+          margin: 2%;
+        }
+        span {
+          margin: 2%;
+          /* color: rgba(253, 78, 66, 0.933); */
+        }
+        .button1 {
+          transition: 0.5s;
+          width: 45%;
+          background-color: #333;
+          color: #fff;
+          border: none;
+          padding: 8px;
+          margin: 10px;
+          font-size: 2vw;
+          text-wrap: break-word;
+          cursor: pointer;
+        }
+      }
+      @media screen and (max-width: 540px) {
+        .content {
+          margin: 15%;
+          height: 20%;
+          border-radius: 15px;
+          background-color: rgb(255, 255, 255);
+          padding: 20px;
+          text-align: center;
+          border: 1px solid rgba(138, 138, 138, 0.305);
+        }
+        .content1 {
+          margin: 15%;
+          height: 25%;
+          border-radius: 15px;
+          background-color: rgb(255, 255, 255);
+          padding: 5px;
+          text-align: center;
+          border: 1px solid rgba(138, 138, 138, 0.305);
+        }
+        .blk {
+          font-size: 2.8vw;
+          width: 100%;
+          margin: 2%;
+        }
+        span {
+          margin: 2%;
+
+          color: rgba(253, 78, 66, 0.933);
+        }
+        h3 {
+          font-size: 3vw;
+        }
+        .button1 {
+          transition: 0.5s;
+          width: 40%;
+          background-color: #333;
+          color: #fff;
+          border: none;
+          padding: 5px;
+          margin: 8px;
+          font-size: 2.2vw;
+          cursor: pointer;
+        }
+      }
+    </style>
+    <script>
+      // POPUP SCRIPT
+      function showPopup(message, duration) {
+        var popup = document.getElementById("popup");
+        var popupMessage = document.getElementById("popupMessage");
+        popupMessage.innerText = message;
+        popup.style.display = "block";
+
+        setTimeout(function () {
+          hidePopup();
+        }, duration);
+      }
+
+      function hidePopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
+      }
+      // POPUP SCRIPT END
+      // Your JavaScript code for the driver profile page
+
+      function decodeBase64Param(param) {
+        return atob(param);
+      }
+
+      function getDriverProfile(id, sessionid) {
+        // Decode the ID from base64
+        const decodedId = decodeBase64Param(id);
+        const decodedsessionid = decodeBase64Param(sessionid);
+
+        // Create the data payload to send to the backend
+        const data = {
+          id: decodedId,
+          sessionid: decodedsessionid,
+        };
+
+        // Make an API request to fetch the driver's profile information
+        fetch(
+          "https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/driverprofile",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => response.json())
+          .then((driverProfile) => {
+            // Update the UI with the driver's information
+            if (driverProfile.state == "success") {
+              document.getElementById("driver-name").textContent =
+                driverProfile.name;
+              document.getElementById("driver-phone").textContent =
+                driverProfile.phone;
+              document.getElementById("car-no").textContent =
+                driverProfile.carno;
+              document.getElementById("email").textContent =
+                driverProfile.email;
+              document.getElementById("city").textContent = driverProfile.city;
+              document.getElementById("total-trips").textContent =
+                driverProfile.totaltrips;
+              document.getElementById("driver-status").textContent =
+                driverProfile.driverstatus;
+              chngcolor();
+            } else if (driverProfile.state == "error") {
+              showPopup(driverProfile.status, 6500);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching driver profile:", error);
+          });
+      }
+
+      // Extract the driver ID and session ID from the query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+      const sessionid = urlParams.get("sessionid");
+
+      // Call the function to get and display the driver's profile
+      getDriverProfile(id, sessionid);
+
+      function switchDriverStatus(id, sessionId, statusValue) {
+        // Create the data payload to send to the backend
+        const data = {
+          id: id,
+          sessionid: sessionId,
+          status: statusValue,
+        };
+
+        // Make an API request to switch the driver's status
+        fetch(
+          "https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/switchstatus",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            // Handle the response if needed
+            if (result.state == "success") {
+              console.log(result);
+              location.reload();
+            } else if (result.state == "error") {
+              showPopup(status, 6500);
+            }
+          })
+          .catch((error) => {
+            console.error("Error switching driver status:", error);
+          });
+      }
+
+      function handleStatusChange() {
+        const id = decodeBase64Param(urlParams.get("id"));
+        const sessionid = decodeBase64Param(urlParams.get("sessionid"));
+        const currentStatus =
+          document.getElementById("driver-status").textContent;
+
+        if (currentStatus === "active") {
+          // Switch to offline
+          var conf = confirm("switch status to OFFLINE ?");
+          if (conf == true) switchDriverStatus(id, sessionid, "offline");
+        } else if (currentStatus === "offline") {
+          // Switch to online
+          var conf = confirm("switch status to ONLINE ?");
+          if (conf == true) switchDriverStatus(id, sessionid, "active");
+        } else if (currentStatus === "ontrip") {
+          showPopup("Cannot Switch Status while ONTRIP !", 6500);
+        }
+
+        // No status change for 'ontrip'
+      }
+      function totrip() {
+        const encryptedId = urlParams.get("id");
+        const encryptedsessionId = urlParams.get("sessionid");
+
+        if (encryptedId && encryptedsessionId) {
+          window.location.href = `trip.html?id=${encryptedId}&sessionid=${encryptedsessionId}`;
+        }
+      }
+      function chngcolor() {
+        const val = document.getElementById("driver-status");
+        const val1 = document.getElementById("driver-status").textContent;
+        console.log(val);
+        console.log(val1);
+        if (val1 == "active") {
+          val.style.color = "orange";
+          val.style.fontWeight = "700";
+        } else if (val1 == "ontrip") {
+          val.style.color = "green";
+          val.style.fontWeight = "700";
+        } else if (val1 == "offline") {
+          val.style.color = "red";
+          val.style.fontWeight = "700";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <!-- Header content as needed -->
+      <h1>Driver Profile</h1>
+    </header>
+    <div class="container">
+      <div class="content">
+        <!-- Driver Profile Information -->
+
+        <div class="blk">
+          <strong>Name:</strong><span class="txtval" id="driver-name"></span>
+        </div>
+        <div class="blk">
+          <strong>Phone:</strong><span class="txtval" id="driver-phone"></span>
+        </div>
+        <div class="blk">
+          <strong>Number:</strong><span class="txtval" id="car-no"></span>
+        </div>
+        <div class="blk">
+          <strong>Email :</strong><span class="txtval" id="email"></span>
+        </div>
+        <div class="blk">
+          <strong>City :</strong> <span class="txtval" id="city"></span>
+        </div>
+        <div class="blk">
+          <strong>Trips:</strong><span class="txtval" id="total-trips"></span>
+        </div>
+        <div class="blk">
+          <strong>Status:</strong><span id="driver-status"></span>
+        </div>
+      </div>
+      <div class="content1">
+        <h3>Utilities</h3>
+
+        <button class="button1" onclick="handleStatusChange()">
+          Switch Status
+        </button>
+
+        <button onclick="totrip()" class="button1">Active Trip</button>
+      </div>
+      <div id="popup">
+        <p id="popupMessage"></p>
+        <button id="popupclosebutton" onclick="hidePopup()">Close</button>
+      </div>
+    </div>
+    <footer>&copy; 2023 Your Company. All rights reserved.</footer>
+  </body>
+</html>
