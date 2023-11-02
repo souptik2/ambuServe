@@ -310,7 +310,7 @@
           .openPopup();
 
         // Initialize and autoupdate Ambulance cab marker
-        if (carlat != booklat && carlong != booklong) {
+        if (carlat != null && carlong != null) {
           console.log(carlat, carlong, "inside 1st True");
           cabMarker = L.marker([carlat, carlong], {
             icon: ambIcon,
@@ -348,8 +348,9 @@
                 newLocation.carlat,
                 newLocation.carlong,
                 "inside 2nd True"
-              );
-              cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
+              ); 
+              funcab(newLocation.carlat, newLocation.carlong);
+             // cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
             } else showPopup("Please wait,\nfetching Ambulance location", 5000);
           })
           .catch((error) => {
@@ -357,6 +358,18 @@
             console.error("Error fetching cab location:", error);
           });
       }
+      funcab(carlat,carlong){
+        var ambIcon = L.icon({
+          iconUrl: "taxi.png",
+          iconSize: [45, 50],
+        });
+        
+        cabMarker = L.marker([carlat, carlong], {
+            icon: ambIcon,
+          })
+            .addTo(map)
+            .bindPopup("Ambulance Location")
+            .openPopup();}
 
       window.onload = function () {
         getBookingData();
