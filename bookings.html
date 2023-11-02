@@ -314,6 +314,7 @@
           console.log(carlat, carlong, "inside 1st True");
           cabMarker = L.marker([carlat, carlong], {
             icon: ambIcon,
+            opacity: 0
           })
             .addTo(map)
             .bindPopup("Ambulance Location")
@@ -351,6 +352,7 @@
               ); 
              // funcab(newLocation.carlat, newLocation.carlong);
               cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
+              cabMarker.setOpacity(1):
             } else showPopup("Please wait,\nfetching Ambulance location", 5000);
           })
           .catch((error) => {
