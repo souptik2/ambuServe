@@ -456,14 +456,22 @@
 
                   showPopup(result.status, 6500);
 
+                  showPopup("Ending The Trip", 4000);
+                  setTimeout(function () {
+                    location.reload();
+                  }, 3000);
                   bookingForm.reset();
-                  showPopup("Ending The Trip", 5000);
                   closeBookingModal();
+                  //location.reload();
                   endtrip();
-                } else {
-                  showPopup(result.status, 6500);
+                } else if (result.state == "error") {
+                  console.log(result);
+                  showPopup(result.status, 4000);
                   bookingForm.reset();
                   closeBookingModal();
+                  setTimeout(function () {
+                    location.reload();
+                  }, 2000);
                 }
               })
               .catch((error) => {
