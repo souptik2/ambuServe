@@ -349,8 +349,8 @@
                 newLocation.carlong,
                 "inside 2nd True"
               ); 
-              funcab(newLocation.carlat, newLocation.carlong);
-             // cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
+             // funcab(newLocation.carlat, newLocation.carlong);
+              cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
             } else showPopup("Please wait,\nfetching Ambulance location", 5000);
           })
           .catch((error) => {
