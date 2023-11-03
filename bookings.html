@@ -319,7 +319,7 @@
        
           })
             .addTo(map);
-            cabMarker.bindPopup("Ambulance Location");
+           //cabMarker.bindPopup("Ambulance Location");
             //.openPopup();
         } else showPopup("Please wait,\nfetching Ambulance location", 5000);
       }
@@ -355,7 +355,8 @@
              // funcab(newLocation.carlat, newLocation.carlong);
               cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
               cabMarker.setOpacity(1);
-              cabMarker.openPopup();
+              cabMarker.bindPopup("Ambulance Location");
+              //cabMarker.openPopup();
             } else showPopup("Please wait,\nfetching Ambulance location", 5000);
           })
           .catch((error) => {
