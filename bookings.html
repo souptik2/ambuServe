@@ -315,12 +315,10 @@
           cabMarker = L.marker([carlat, carlong], {
             icon: ambIcon,
             opacity: 0,
-            autoPan: false
-       
-          })
-            .addTo(map);
-           //cabMarker.bindPopup("Ambulance Location");
-            //.openPopup();
+            autoPan: false,
+          }).addTo(map);
+          //cabMarker.bindPopup("Ambulance Location");
+          //.openPopup();
         } else showPopup("Please wait,\nfetching Ambulance location", 5000);
       }
 
@@ -351,11 +349,12 @@
                 newLocation.carlat,
                 newLocation.carlong,
                 "inside 2nd True"
-              ); 
-             // funcab(newLocation.carlat, newLocation.carlong);
+              );
+              // funcab(newLocation.carlat, newLocation.carlong);
               cabMarker.setLatLng([newLocation.carlat, newLocation.carlong]);
               cabMarker.setOpacity(1);
               cabMarker.bindPopup("Ambulance Location");
+              cabMarker.setView([newLocation.carlat, newLocation.carlong], 10);
               //cabMarker.openPopup();
             } else showPopup("Please wait,\nfetching Ambulance location", 5000);
           })
@@ -364,7 +363,6 @@
             console.error("Error fetching cab location:", error);
           });
       }
-      
 
       window.onload = function () {
         getBookingData();
