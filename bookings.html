@@ -226,7 +226,7 @@
               setInterval(function () {
                 const tid = bookingData.tripid; // Replace with the actual tid
                 updateCabLocation(tid);
-              }, 35000);
+              }, 25000);
               displayBookingInfo(bookingData);
 
               // If page is minimized or new page/tab is opened, it will keep performing the task
@@ -238,8 +238,8 @@
                   setInterval(function () {
                     const tid = bookingData.tripid; // Replace with the actual tid
                     updateCabLocation(tid);
-                  }, 35000);
-                  displayBookingInfo(bookingData);
+                  }, 25000);
+                  //displayBookingInfo(bookingData);
                 }
               });
             } else if (bookingData.state == "error") {

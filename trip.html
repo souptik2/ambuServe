@@ -332,7 +332,7 @@
               setInterval(function () {
                 const tid = tripDetails.tripid; // Replace with the actual tid
                 getLocation(tid);
-              }, 25000);
+              }, 20000);
               // If page is minimized or new page/tab is opened, it will keep performing the task
               document.addEventListener("visibilitychange", function () {
                 if (document.visibilityState === "hidden") {
@@ -341,7 +341,7 @@
                   setInterval(function () {
                     const tid = tripDetails.tripid; // Replace with the actual tid
                     getLocation(tid);
-                  }, 25000);
+                  }, 20000);
                 }
               });
 
@@ -602,32 +602,6 @@
         const modal = document.getElementById("booking-modal");
         modal.style.display = "none";
       }
-
-      // document.addEventListener("visibilitychange", function () {
-      //   if (document.visibilityState === "hidden" && getTripDetails()) {
-      //     // Page is now hidden, and the first endpoint is successful
-      //     // Start sending location updates
-      //     // locationInterval = setInterval(() => {
-      //     //   getLocation(/* pass tripid here */);
-      //     // }, 300000); // 5 minutes interval
-      //     setInterval(function () {
-      //       const tid = tripDetails.tripid; // Replace with the actual tid
-      //       getLocation(tid);
-      //       console.log("Sending loctaion when window is changed, ID:" + tid);
-      //     }, 10000);
-      //     console.log("getTripDetails is T:: " + getTripDetails());
-      //   } else if (
-      //     document.visibilityState === "hidden" &&
-      //     getTripDetails() != true
-      //   ) {
-      //     // Page is now hidden, and the first endpoint is successful
-      //     // Start sending location updates
-      //     // locationInterval = setInterval(() => {
-      //     //   getLocation(/* pass tripid here */);
-      //     // }, 300000); // 5 minutes interval
-      //     console.log("getTripDetails is F:: " + getTripDetails());
-      //   }
-      // });
     </script>
   </head>
   <body>
@@ -676,7 +650,14 @@
         <h2>Enter PIN</h2>
         <form id="booking-form">
           <label for="userPIN">PIN:</label>
-          <input type="text" id="userPIN" required />
+          <input
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="4"
+            id="userPIN"
+            required
+          />
 
           <button type="submit">Send</button>
         </form>
