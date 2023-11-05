@@ -221,12 +221,27 @@
             if (bookingData.state == "success") {
               //initializeCabLocationUpdate(bookingData.tripid);
               // setInterval("Hello", 500);
+              console.log("page is Visible");
               updateCabLocation(bookingData.tripid);
               setInterval(function () {
                 const tid = bookingData.tripid; // Replace with the actual tid
                 updateCabLocation(tid);
-              }, 30000);
+              }, 35000);
               displayBookingInfo(bookingData);
+
+              // If page is minimized or new page/tab is opened, it will keep performing the task
+
+              document.addEventListener("visibilitychange", function () {
+                if (document.visibilityState === "hidden") {
+                  console.log("page is Hidden");
+                  updateCabLocation(bookingData.tripid);
+                  setInterval(function () {
+                    const tid = bookingData.tripid; // Replace with the actual tid
+                    updateCabLocation(tid);
+                  }, 35000);
+                  displayBookingInfo(bookingData);
+                }
+              });
             } else if (bookingData.state == "error") {
               showPopup(bookingData.status, 5000);
 

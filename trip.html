@@ -301,13 +301,16 @@
         };
 
         // Make an API request to fetch trip details
-        fetch("https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/trip", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
+        return fetch(
+          "https://ambuserve-api-s1wifw.5sc6y6-3.usa-e2.cloudhub.io/trip",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
           .then((response) => response.json())
           .then((tripDetails) => {
             if (tripDetails.state == "success") {
@@ -323,13 +326,26 @@
                 tripDetails.chkouttm;
 
               // Get the initial location
+
+              console.log("page is Visible");
               getLocation(tripDetails.tripid);
-              // Update the location every 40 seconds
-              //setInterval(getLocation(tripDetails.tripid), 40000);
               setInterval(function () {
                 const tid = tripDetails.tripid; // Replace with the actual tid
                 getLocation(tid);
-              }, 20000);
+              }, 25000);
+              // If page is minimized or new page/tab is opened, it will keep performing the task
+              document.addEventListener("visibilitychange", function () {
+                if (document.visibilityState === "hidden") {
+                  console.log("page is Hidden");
+                  getLocation(tripDetails.tripid);
+                  setInterval(function () {
+                    const tid = tripDetails.tripid; // Replace with the actual tid
+                    getLocation(tid);
+                  }, 25000);
+                }
+              });
+
+              // return true;
             } else if (tripDetails.state == "error") {
               showPopup(tripDetails.status, 5500);
               setTimeout(callURL, 6000);
@@ -559,10 +575,6 @@
               const lvlatitude = position.coords.latitude;
               const lvlongitude = position.coords.longitude;
 
-              // Display the live location on the webpage
-              // document.getElementById("latitude").textContent = latitude;
-              // document.getElementById("longitude").textContent = longitude;
-
               // Send the location to your application every 5 minutes (300,000 milliseconds)
               console.log(
                 "tid:" + tid + "lat:" + lvlatitude + "long:" + lvlongitude
@@ -590,6 +602,32 @@
         const modal = document.getElementById("booking-modal");
         modal.style.display = "none";
       }
+
+      // document.addEventListener("visibilitychange", function () {
+      //   if (document.visibilityState === "hidden" && getTripDetails()) {
+      //     // Page is now hidden, and the first endpoint is successful
+      //     // Start sending location updates
+      //     // locationInterval = setInterval(() => {
+      //     //   getLocation(/* pass tripid here */);
+      //     // }, 300000); // 5 minutes interval
+      //     setInterval(function () {
+      //       const tid = tripDetails.tripid; // Replace with the actual tid
+      //       getLocation(tid);
+      //       console.log("Sending loctaion when window is changed, ID:" + tid);
+      //     }, 10000);
+      //     console.log("getTripDetails is T:: " + getTripDetails());
+      //   } else if (
+      //     document.visibilityState === "hidden" &&
+      //     getTripDetails() != true
+      //   ) {
+      //     // Page is now hidden, and the first endpoint is successful
+      //     // Start sending location updates
+      //     // locationInterval = setInterval(() => {
+      //     //   getLocation(/* pass tripid here */);
+      //     // }, 300000); // 5 minutes interval
+      //     console.log("getTripDetails is F:: " + getTripDetails());
+      //   }
+      // });
     </script>
   </head>
   <body>
